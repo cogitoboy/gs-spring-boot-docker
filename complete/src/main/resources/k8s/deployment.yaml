@@ -1,0 +1,33 @@
+# https://learn.microsoft.com/en-us/azure/developer/java/spring-framework/deploy-spring-boot-java-app-on-kubernetes
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gs-spring-boot-docker
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gs-spring-boot-docker
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: gs-spring-boot-docker
+    spec:
+      containers:
+        - name: gs-spring-boot-docker
+          image: dapplegatesregistry.azurecr.io/gs-spring-boot-docker:latest
+          resources: {}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+
+
